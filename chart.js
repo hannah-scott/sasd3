@@ -9,17 +9,17 @@
 // Sample data
 var self = this;
 var sampleData = {data:[
-    [2000, 100],
-    [2001, 101],
-    [2002, 102],
-    [2003, 96],
-    [2004, 100],
-    [2005, 101],
-    [2006, 102],
-    [2001, 96]
+    ["2000", 100],
+    ["2001", 101],
+    ["2002", 102],
+    ["2003", 96],
+    ["2004", 100],
+    ["2005", 101],
+    ["2006", 102],
+    ["2007", 96]
 ]};
 var sampleColumnInfo = [
-    {label: "year", type: "number"},
+    {label: "year", type: "string"},
     {label: "value", type:"number"}
 ];
 
@@ -41,8 +41,8 @@ var g = svg.append("g")
 function drawChart(columnInfo, data) {
 
     // Scale X and Y
-    xScale.domain(data.map(function(d) { console.log(d);return d[columnInfo[0].label]; }));
-    yScale.domain([0, d3.max(data, function(d) { console.log(d[columnInfo[1].label]); return d[columnInfo[1].label]; })]);
+    xScale.domain(data.map(function(d) { return d[columnInfo[0].label]; }));
+    yScale.domain([0, d3.max(data, function(d) { return d[columnInfo[1].label]; })]);
 
     // Draw axes
     g.append("g")
@@ -136,5 +136,4 @@ if (window.addEventListener) {
 // results = sampleData;
 // columnInfo = sampleColumnInfo;
 // data = formatSASData(columnInfo, results);
-// console.log(results);
 // drawChart(columnInfo, data);
