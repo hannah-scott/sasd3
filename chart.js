@@ -4,8 +4,6 @@
     Both variables must be numeric
 */
 
-
-
 // Sample data
 var self = this;
 var sampleData = {data:[
@@ -24,18 +22,17 @@ var sampleColumnInfo = [
 ];
 
 // SVG settings
-var width=760 ;
-var height=400;
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width + 200)
-    .attr("height", height + 200);
+var svg = d3.select("svg"),
+    margin = 200,
+    width = svg.attr("width") - margin ,
+    height = svg.attr("height") - margin;
 
 var xScale = d3.scaleBand().range ([0, width]).padding(0.4),
 yScale = d3.scaleLinear().range([height, 0]);
 
 var g = svg.append("g")
-       .attr("transform", "translate(" + 100 + "," + 100 + ")");
+       .attr("transform", "translate(" + margin/2 + "," + margin/2 + ")");
 
 // Draw simple bar chart
 function drawChart(columnInfo, data) {
@@ -46,7 +43,7 @@ function drawChart(columnInfo, data) {
 
     // Draw axes
     g.append("g")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", "translate(" + 0 + "," + height + ")")
     .call(d3.axisBottom(xScale).tickFormat(function(d){
         return d;
         }).ticks(10))
@@ -54,7 +51,6 @@ function drawChart(columnInfo, data) {
         .attr("x", 6)
         .attr("dx", "0.71em")
         .attr("text-anchor", "end")
-        
         .text("year");
 
     g.append("g")
@@ -125,15 +121,15 @@ function formatSASData(c, d) {
 }
 
 // Fetch data and run process
-if (window.addEventListener) {
-    // For standards-compliant web browsers
-    window.addEventListener("message", onMessage, false);
-} else {
-    window.attachEvent("onmessage", onMessage);
-}
+// if (window.addEventListener) {
+//     // For standards-compliant web browsers
+//     window.addEventListener("message", onMessage, false);
+// } else {
+//     window.attachEvent("onmessage", onMessage);
+// }
 
 // // DEBUG settings
-// results = sampleData;
-// columnInfo = sampleColumnInfo;
-// data = formatSASData(columnInfo, results);
-// drawChart(columnInfo, data);
+results = sampleData;
+columnInfo = sampleColumnInfo;
+data = formatSASData(columnInfo, results);
+drawChart(columnInfo, data);
