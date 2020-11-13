@@ -1,6 +1,24 @@
 var width=760 ;
 var height=400;
 
+var sampleData = {data:[
+    ["2000", 100],
+    ["2001", 101],
+    ["2002", 102],
+    ["2003", 96],
+    ["2004", 100],
+    ["2005", 101],
+    ["2006", 102],
+    ["2007", 96]
+]};
+
+/* EVENT HANDLERS */
+var self = this;
+var sampleColumnInfo = [
+    {label: "year", type: "string"},
+    {label: "value", type:"number"}
+];
+
 var svg = d3.select("body").append("svg")
     .attr("width", width + 200)
     .attr("height", height + 200);
@@ -12,8 +30,6 @@ var g = svg.append("g")
        .attr("transform", "translate(" + 100 + "," + 100 + ")");
 
 function drawChart(columnInfo, data) {
-    
-
     console.log(data);
 
     xScale.domain(data.map(function(d) { console.log(d);return d[columnInfo[0]]; }));
@@ -76,7 +92,7 @@ function onMessage(evt) {
 
         if(results) {
             data = formatSASData(columnInfo, results);
-            data.then(function(d) {drawChart(d);}); 
+            drawChart(columnInfo, data);
         }
     }
 }
@@ -86,9 +102,9 @@ function formatSASData(c, d) {
     dict = []
 
     // For each row of data
-    for(i=0; i < d.length; i++) {
+    for(i=0; i < d.data.length; i++) {
         // Create dictionary of row mapped to column names
-        row = d[i]
+        row = d.data[i]
         row_dict = []
 
         for (j=0; j < row.length; j++) {
@@ -102,11 +118,14 @@ function formatSASData(c, d) {
     return dict
 }
 
-if (window.addEventListener) {
-    // For standards-compliant web browsers
-    window.addEventListener("message", onMessage, false);
-} else {
-    window.attachEvent("onmessage", onMessage);
-}
-
-// d3.csv("https://raw.githubusercontent.com/hannah-scott/D3.js/main/data.csv").then(function(data) {drawChart(data)});
+// if (window.addEventListener) {
+//     // For standards-compliant web browsers
+//     window.addEventListener("message", onMessage, false);
+// } else {
+//     window.attachEvent("onmessage", onMessage);
+// }
+// results = sampleData;
+// columnInfo = sampleColumnInfo;
+// data = formatSASData(columnInfo, results);
+// console.log(results);
+// drawChart(columnInfo, data);
