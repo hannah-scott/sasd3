@@ -121,15 +121,15 @@ function formatSASData(c, d) {
 }
 
 // Fetch data and run process
-// if (window.addEventListener) {
-//     // For standards-compliant web browsers
-//     window.addEventListener("message", onMessage, false);
-// } else {
-//     window.attachEvent("onmessage", onMessage);
-// }
+if (window.addEventListener) {
+    // For standards-compliant web browsers
+    window.addEventListener("message", onMessage, false);
+} else {
+    window.attachEvent("onmessage", onMessage);
+}
 
 // // DEBUG settings
-results = sampleData;
-columnInfo = sampleColumnInfo;
-data = formatSASData(columnInfo, results);
-drawChart(columnInfo, data);
+// results = sampleData;
+// columnInfo = sampleColumnInfo;
+// data = formatSASData(columnInfo, results);
+// drawChart(columnInfo, data);
