@@ -1,23 +1,24 @@
-var width=760 ;
-var height=400;
-
-var sampleData = {data:[
-    ["2000", 100],
-    ["2001", 101],
-    ["2002", 102],
-    ["2003", 96],
-    ["2004", 100],
-    ["2005", 101],
-    ["2006", 102],
-    ["2007", 96]
-]};
-
-/* EVENT HANDLERS */
+// Sample data
 var self = this;
+var sampleData = {data:[
+    [2000, 100],
+    [2001, 101],
+    [2002, 102],
+    [2003, 96],
+    [2004, 100],
+    [2005, 101],
+    [2006, 102],
+    [2001, 96]
+]};
 var sampleColumnInfo = [
-    {label: "year", type: "string"},
+    {label: "year", type: "number"},
     {label: "value", type:"number"}
 ];
+
+// SVG settings
+
+var width=760 ;
+var height=400;
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + 200)
@@ -29,11 +30,12 @@ yScale = d3.scaleLinear().range([height, 0]);
 var g = svg.append("g")
        .attr("transform", "translate(" + 100 + "," + 100 + ")");
 
+// Draw simple bar chart
 function drawChart(columnInfo, data) {
     console.log(data);
 
-    xScale.domain(data.map(function(d) { console.log(d);return d[columnInfo[0]]; }));
-    yScale.domain([0, d3.max(data, function(d) { console.log(d[columnInfo[1]]); return d[columnInfo[1]]; })]);
+    xScale.domain(data.map(function(d) { console.log(d);return d[columnInfo[0].label]; }));
+    yScale.domain([0, d3.max(data, function(d) { console.log(d[columnInfo[1].label]); return d[columnInfo[1].label]; })]);
 
     console.log("x scale domain: " + xScale.domain());
     console.log("y scale domain: " + yScale.domain());
@@ -66,10 +68,10 @@ function drawChart(columnInfo, data) {
     .data(data)
     .enter().append("rect")
     .attr("class", "bar")
-    .attr("x", function(d) { return xScale(d[columnInfo[0]]); })
-    .attr("y", function(d) { return yScale(d[columnInfo[1]]); })
+    .attr("x", function(d) { return xScale(d[columnInfo[0].label]); })
+    .attr("y", function(d) { return yScale(d[columnInfo[1].label]); })
     .attr("width", xScale.bandwidth())
-    .attr("height", function(d) { return height - yScale(d[columnInfo[1]]); });
+    .attr("height", function(d) { return height - yScale(d[columnInfo[1].label]); });
 };
 
 
@@ -108,7 +110,7 @@ function formatSASData(c, d) {
         row_dict = []
 
         for (j=0; j < row.length; j++) {
-            row_dict[c[j]] = row[j];
+            row_dict[c[j].label] = row[j];
         }
 
         dict.push(row_dict);
@@ -118,14 +120,15 @@ function formatSASData(c, d) {
     return dict
 }
 
-if (window.addEventListener) {
-    // For standards-compliant web browsers
-    window.addEventListener("message", onMessage, false);
-} else {
-    window.attachEvent("onmessage", onMessage);
-}
-// results = sampleData;
-// columnInfo = sampleColumnInfo;
-// data = formatSASData(columnInfo, results);
-// console.log(results);
-// drawChart(columnInfo, data);
+// if (window.addEventListener) {
+//     // For standards-compliant web browsers
+//     window.addEventListener("message", onMessage, false);
+// } else {
+//     window.attachEvent("onmessage", onMessage);
+// }
+results = sampleData;
+columnInfo = sampleColumnInfo;
+
+data = formatSASData(columnInfo, results);
+console.log(results);
+drawChart(columnInfo, data);
