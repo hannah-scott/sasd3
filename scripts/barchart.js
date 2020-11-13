@@ -31,12 +31,12 @@ var svg = d3.select("svg"),
 var xScale = d3.scaleBand().range ([0, width]).padding(0.4),
 yScale = d3.scaleLinear().range([height, 0]);
 
-var g = svg.append("g")
-       .attr("transform", "translate(" + margin/2 + "," + margin/2 + ")");
-
 // Draw simple bar chart
 function drawChart(columnInfo, data) {
+    svg.selectAll('g').exit().remove();
 
+    var g = svg.append("g")
+       .attr("transform", "translate(" + margin/2 + "," + margin/2 + ")");
     // Scale X and Y
     xScale.domain(data.map(function(d) { return d[columnInfo[0].label]; }));
     yScale.domain([0, d3.max(data, function(d) { return d[columnInfo[1].label]; })]);
