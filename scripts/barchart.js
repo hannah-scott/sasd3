@@ -24,7 +24,7 @@ var sampleColumnInfo = [
 // SVG settings
 
 var svg = d3.select("svg"),
-    margin = 200,
+    margin = 40,
     width = svg.attr("width") - margin ,
     height = svg.attr("height") - margin;
 
@@ -129,7 +129,7 @@ if (window.addEventListener) {
 }
 
 // // DEBUG settings
-// results = sampleData;
-// columnInfo = sampleColumnInfo;
-// data = formatSASData(columnInfo, results);
-// drawChart(columnInfo, data);
+results = sampleData;
+columnInfo = sampleColumnInfo;
+data = formatSASData(columnInfo, results);
+drawChart(columnInfo, data);
