@@ -120,15 +120,15 @@ function formatSASData(c, d) {
     return dict
 }
 
-// if (window.addEventListener) {
-//     // For standards-compliant web browsers
-//     window.addEventListener("message", onMessage, false);
-// } else {
-//     window.attachEvent("onmessage", onMessage);
-// }
-results = sampleData;
-columnInfo = sampleColumnInfo;
+if (window.addEventListener) {
+    // For standards-compliant web browsers
+    window.addEventListener("message", onMessage, false);
+} else {
+    window.attachEvent("onmessage", onMessage);
+}
+// results = sampleData;
+// columnInfo = sampleColumnInfo;
 
-data = formatSASData(columnInfo, results);
-console.log(results);
-drawChart(columnInfo, data);
+// data = formatSASData(columnInfo, results);
+// console.log(results);
+// drawChart(columnInfo, data);
