@@ -1,3 +1,11 @@
+/*
+    Simple D3 barchart for SAS Data-Driven Content objects
+
+    Both variables must be numeric
+*/
+
+
+
 // Sample data
 var self = this;
 var sampleData = {data:[
@@ -16,7 +24,6 @@ var sampleColumnInfo = [
 ];
 
 // SVG settings
-
 var width=760 ;
 var height=400;
 
@@ -32,16 +39,12 @@ var g = svg.append("g")
 
 // Draw simple bar chart
 function drawChart(columnInfo, data) {
-    console.log(data);
 
+    // Scale X and Y
     xScale.domain(data.map(function(d) { console.log(d);return d[columnInfo[0].label]; }));
     yScale.domain([0, d3.max(data, function(d) { console.log(d[columnInfo[1].label]); return d[columnInfo[1].label]; })]);
 
-    console.log("x scale domain: " + xScale.domain());
-    console.log("y scale domain: " + yScale.domain());
-
-    
-
+    // Draw axes
     g.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(xScale).tickFormat(function(d){
@@ -64,14 +67,15 @@ function drawChart(columnInfo, data) {
         .attr("text-anchor", "end")
         .text("value");
 
+    // Draw bars
     g.selectAll(".bar")
-    .data(data)
-    .enter().append("rect")
-    .attr("class", "bar")
-    .attr("x", function(d) { return xScale(d[columnInfo[0].label]); })
-    .attr("y", function(d) { return yScale(d[columnInfo[1].label]); })
-    .attr("width", xScale.bandwidth())
-    .attr("height", function(d) { return height - yScale(d[columnInfo[1].label]); });
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return xScale(d[columnInfo[0].label]); })
+        .attr("y", function(d) { return yScale(d[columnInfo[1].label]); })
+        .attr("width", xScale.bandwidth())
+        .attr("height", function(d) { return height - yScale(d[columnInfo[1].label]); });
 };
 
 
@@ -99,6 +103,7 @@ function onMessage(evt) {
     }
 }
 
+// Convert data from SAS supplied format to D3 format
 function formatSASData(c, d) {
     // Create a dict with columns from columnInfo and data rows
     dict = []
@@ -115,20 +120,21 @@ function formatSASData(c, d) {
 
         dict.push(row_dict);
     }
-    // console.log(dict);
 
     return dict
 }
 
+// Fetch data and run process
 if (window.addEventListener) {
     // For standards-compliant web browsers
     window.addEventListener("message", onMessage, false);
 } else {
     window.attachEvent("onmessage", onMessage);
 }
+
+// // DEBUG settings
 // results = sampleData;
 // columnInfo = sampleColumnInfo;
-
 // data = formatSASData(columnInfo, results);
 // console.log(results);
 // drawChart(columnInfo, data);
