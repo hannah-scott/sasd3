@@ -29,7 +29,7 @@ var svg = d3.select("svg"),
     height = svg.attr("height") - margin;
 
 var xScale = d3.scaleBand().range ([0, width]).padding(0.4),
-yScale = d3.scaleLinear().range([height, 0]);
+    yScale = d3.scaleLinear().range([height, 0]);
 
 // Draw simple bar chart
 function drawChart(columnInfo, data) {
