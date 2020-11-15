@@ -115,8 +115,9 @@
 <p>D3 has a <code>csv</code> function that will load in data in the format that D3.js likes. Unfortunately the data has to be online somewhere. There's a CSV we can use in the Git repo for this tutorial.</p>
 <p><code>d3.csv</code> returns a <code>Promise</code> object, which is basically saying, &quot;Trust me, when you need the data it'll be there.&quot;</p>
 <p>We won't be using this for our SAS integration, so let's just use <code>console.log</code> to get a look at the data.</p>
-<pre><code class="language-javascript"><div>d3.csv(<span class="hljs-string">&quot;https://raw.githubusercontent.com/hannah-scott/D3.js/main/tutorials/basics/data/basics.csv&quot;</span>).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>) </span>{
-    <span class="hljs-built_in">console</span>.log(d);
+<pre><code class="language-javascript"><div>d3.csv(<span class="hljs-string">&quot;https://raw.githubusercontent.com/hannah-scott/D3.js/main/tutorials/basics/data/basics.csv&quot;</span>)
+    .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>) </span>{
+        <span class="hljs-built_in">console</span>.log(d);
 });
 </div></code></pre>
 <p>You'll get a message like this in your browser developer tools:</p>
