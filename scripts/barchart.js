@@ -133,7 +133,7 @@ if (window.addEventListener) {
 }
 
 // // DEBUG settings
-// results = sampleData;
-// columnInfo = sampleColumnInfo;
-// data = formatSASData(columnInfo, results);
-// drawChart(columnInfo, data);
+results = sampleData;
+columnInfo = sampleColumnInfo;
+data = formatSASData(columnInfo, results);
+drawChart(columnInfo, data);

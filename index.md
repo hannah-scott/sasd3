@@ -4,7 +4,7 @@ A repository of D3.js charts for use with the SAS Viya Data-Driven Content conta
 
 ## Charts 
 
-[Barchart](charts/barchart.html)
+[Barchart](charts/barchart.md)
 
 ## Tutorials
 
