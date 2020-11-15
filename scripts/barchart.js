@@ -24,7 +24,7 @@ var sampleColumnInfo = [
 // SVG settings
 
 var svg = d3.select("svg"),
-    margin = 40,
+    margin = 100,
     width = svg.attr("width") - margin ,
     height = svg.attr("height") - margin;
 
@@ -33,13 +33,16 @@ var xScale = d3.scaleBand().range ([0, width]).padding(0.4),
 
 // Draw simple bar chart
 function drawChart(columnInfo, data) {
+    var xLabel = columnInfo[0].label,
+        yLabel = columnInfo[1].label;
+
     svg.selectAll('g').exit().remove();
 
     var g = svg.append("g")
        .attr("transform", "translate(" + margin/2 + "," + margin/2 + ")");
     // Scale X and Y
-    xScale.domain(data.map(function(d) { return d[columnInfo[0].label]; }));
-    yScale.domain([0, d3.max(data, function(d) { return d[columnInfo[1].label]; })]);
+    xScale.domain(data.map(function(d) { return d[xLabel]; }));
+    yScale.domain([0, d3.max(data, function(d) { return d[yLabel]; })]);
 
     // Draw axes
     g.append("g")
@@ -47,33 +50,34 @@ function drawChart(columnInfo, data) {
     .call(d3.axisBottom(xScale).tickFormat(function(d){
         return d;
         }).ticks(10))
+        .enter()
         .append("text")
         .attr("x", 6)
         .attr("dx", "0.71em")
         .attr("text-anchor", "end")
-        .text("year");
+        .text(xLabel);
 
     g.append("g")
     .call(d3.axisLeft(yScale).tickFormat(function(d){
         return d;
         }).ticks(10))
+        .enter()
         .append("text")
         .attr("y", 6)
         .attr("dy", "0.71em")
         .attr("text-anchor", "end")
-        .text("value");
+        .text(yLabel);
 
     // Draw bars
     g.selectAll(".bar")
         .data(data)
         .enter().append("rect")
         .attr("class", "bar")
-        .attr("x", function(d) { return xScale(d[columnInfo[0].label]); })
-        .attr("y", function(d) { return yScale(d[columnInfo[1].label]); })
+        .attr("x", function(d) { return xScale(d[xLabel]); })
+        .attr("y", function(d) { return yScale(d[yLabel]); })
         .attr("width", xScale.bandwidth())
-        .attr("height", function(d) { return height - yScale(d[columnInfo[1].label]); });
+        .attr("height", function(d) { return height - yScale(d[yLabel]); });
 };
-
 
 // Retrieve data and begin processing
 function onMessage(evt) {
@@ -108,7 +112,7 @@ function formatSASData(c, d) {
     for(i=0; i < d.data.length; i++) {
         // Create dictionary of row mapped to column names
         row = d.data[i]
-        row_dict = []
+        row_dict = new Object;
 
         for (j=0; j < row.length; j++) {
             row_dict[c[j].label] = row[j];
@@ -129,7 +133,7 @@ if (window.addEventListener) {
 }
 
 // // DEBUG settings
-results = sampleData;
-columnInfo = sampleColumnInfo;
-data = formatSASData(columnInfo, results);
-drawChart(columnInfo, data);
+// results = sampleData;
+// columnInfo = sampleColumnInfo;
+// data = formatSASData(columnInfo, results);
+// drawChart(columnInfo, data);
