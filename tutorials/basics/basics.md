@@ -105,7 +105,7 @@ D3 has a `csv` function that will load in data in the format that D3.js likes. U
 We won't be using this for our SAS integration, so let's just use `console.log` to get a look at the data.
 
 ```javascript
-d3.csv("https://raw.githubusercontent.com/hannah-scott/D3.js/main/tutorials/basics.csv").then(function(d) {
+d3.csv("https://raw.githubusercontent.com/hannah-scott/D3.js/main/tutorials/basics/data/basics.csv").then(function(d) {
     console.log(d);
 });
 ```
