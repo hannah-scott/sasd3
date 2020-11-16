@@ -321,7 +321,6 @@ function onMessage(evt) {
         else if (evt.data.availableRowCount == -1) {
             results = sampleData;
             columnInfo = sampleColumnInfo;
-            
         }
         // Format data and draw chart
         data = formatSASData(columnInfo, results);
