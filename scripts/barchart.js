@@ -87,16 +87,15 @@ function onMessage(evt) {
 
         self.resultName = evt.data.resultName;
 
-        if (evt.data.availableRowCount >= 0) {
+        if (evt.data.availableRowCount >= 0 || evt.data != results) {
             results = evt.data;
             columnInfo = evt.data.columns;
+            data = formatSASData(columnInfo, results);
+            drawChart(columnInfo, data);
         }
         else if (evt.data.availableRowCount == -1) {
             results = sampleData;
             columnInfo = sampleColumnInfo;
-        }
-
-        if(results) {
             data = formatSASData(columnInfo, results);
             drawChart(columnInfo, data);
         }
@@ -132,8 +131,57 @@ if (window.addEventListener) {
     window.attachEvent("onmessage", onMessage);
 }
 
-// // DEBUG settings
+// // // DEBUG settings
 // results = sampleData;
 // columnInfo = sampleColumnInfo;
 // data = formatSASData(columnInfo, results);
 // drawChart(columnInfo, data);
+
+// var change_id = 0;
+
+// function changeData() {
+    
+//     if (change_id == 0) {
+//         sampleData = {data:[
+//             ["2000", 200],
+//             ["2001", 201],
+//             ["2002", 202],
+//             ["2003", 196],
+//             ["2004", 200],
+//             ["2005", 201],
+//             ["2006", 202],
+//             ["2007", 196]
+//         ]};
+//         sampleColumnInfo = [
+//             {label: "year", type: "string"},
+//             {label: "value", type:"number"}
+//         ];
+//         change_id = 1;
+//         results = sampleData;
+//         columnInfo = sampleColumnInfo;
+//         data = formatSASData(columnInfo, results);
+//         drawChart(columnInfo, data);
+//     } else {
+//         sampleData = {data:[
+//             ["2000", 100],
+//             ["2001", 101],
+//             ["2002", 102],
+//             ["2003", 96],
+//             ["2004", 100],
+//             ["2005", 101],
+//             ["2006", 102],
+//             ["2007", 96]
+//         ]};
+//         sampleColumnInfo = [
+//             {label: "year", type: "string"},
+//             {label: "value", type:"number"}
+//         ];
+//         change_id = 0;
+//         results = sampleData;
+//         columnInfo = sampleColumnInfo;
+//         data = formatSASData(columnInfo, results);
+//         drawChart(columnInfo, data);
+//     }
+    
+
+// }
