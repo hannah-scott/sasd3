@@ -90,15 +90,14 @@ function onMessage(evt) {
         if (evt.data.availableRowCount >= 0 || evt.data != results) {
             results = evt.data;
             columnInfo = evt.data.columns;
-            data = formatSASData(columnInfo, results);
-            drawChart(columnInfo, data);
         }
         else if (evt.data.availableRowCount == -1) {
             results = sampleData;
             columnInfo = sampleColumnInfo;
-            data = formatSASData(columnInfo, results);
-            drawChart(columnInfo, data);
         }
+
+        data = formatSASData(columnInfo, results);
+        drawChart(columnInfo, data);
     }
 }
 

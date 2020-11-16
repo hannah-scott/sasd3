@@ -50,7 +50,7 @@ function drawChart(columnInfo, data) {
     var xLabel = columnInfo[0].label,
         yLabel = columnInfo[1].label;
 
-    svg.selectAll('g').exit().remove();
+    svg.selectAll('*').remove();
 
     var g = svg.append("g")
         .attr("transform", "translate(" + margin/2 + "," + margin/2 + ")");

@@ -223,7 +223,7 @@ function drawBarchart(columnInfo, data) {
 Next we're going to tear down the old chart, add a new group and scale our X and Y axes. Our Y axis will start at 0. If you wanted to change this, you can just tweak the first value in the `domain` function.
 
 ```javascript
-    svg.selectAll('g').exit().remove();
+    svg.selectAll('*').remove();
 
     var g = svg.append("g")
         .attr("transform", "translate(" + margin/2 + "," + margin/2 + ")");
@@ -312,22 +312,20 @@ function onMessage(evt) {
 
         self.resultName = evt.data.resultName;
 
-        // If there is any data, then load it
-        if (evt.data.availableRowCount >= 0) {
+        // If there is any data or data has changed, load it and draw chart
+        if (evt.data.availableRowCount >= 0 || evt.data != results) {
             results = evt.data;
             columnInfo = evt.data.columns;
         }
-        // Otherwise, load the sample data
+        // Otherwise, load sample data
         else if (evt.data.availableRowCount == -1) {
             results = sampleData;
             columnInfo = sampleColumnInfo;
+            
         }
-
-        // If there is loaded data, format it and draw the barchart
-        if(results) {
-            data = formatSASData(columnInfo, results);
-            drawChart(columnInfo, data);
-        }
+        // Format data and draw chart
+        data = formatSASData(columnInfo, results);
+        drawChart(columnInfo, data);
     }
 }
 ```
