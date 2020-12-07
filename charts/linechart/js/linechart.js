@@ -40,7 +40,7 @@ function getStandardDeviation (array) {
     const n = array.length
     const mean = array.reduce((a, b) => a + b) / n
     return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
-    }
+}
 
 // Draw simple bar chart
 function drawChart(columnInfo, data) {
@@ -54,8 +54,10 @@ function drawChart(columnInfo, data) {
 
     var baseVal = baseArray.map((d) => { return d[y1Label] });
 
-    var lowerLimit = 100 - 1.96 * getStandardDeviation(baseVal),
-        upperLimit = 100 + 1.96 * getStandardDeviation(baseVal);
+    var baseMean = baseVal.reduce((a, b) => a + b) / baseVal.length;
+
+    var lowerLimit = baseMean - 1.96 * getStandardDeviation(baseVal),
+        upperLimit = baseMean + 1.96 * getStandardDeviation(baseVal);
 
     var testStart = data.find((d) => d[testLabel] === 'T');
 
@@ -90,16 +92,6 @@ function drawChart(columnInfo, data) {
         .attr("dy", "0.71em")
         .attr("text-anchor", "end")
         .text(y1Label);
-
-    // // Draw bars
-    // g.selectAll(".bar")
-    //     .data(data)
-    //     .enter().append("rect")
-    //     .attr("class", "bar")
-    //     .attr("x", function(d) { return xScale(d[xLabel]); })
-    //     .attr("y", function(d) { return yScale(d[y1Label]); })
-    //     .attr("width", xScale.bandwidth())
-    //     .attr("height", function(d) { return height - yScale(d[y1Label]); });
 
     // Draw limit lines
     g.append("path")
@@ -289,6 +281,4 @@ if (window.addEventListener) {
 //         data = formatSASData(columnInfo, results);
 //         drawChart(columnInfo, data);
 //     }
-    
-
 // }
