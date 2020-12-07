@@ -242,50 +242,50 @@ if (window.addEventListener) {
 }
 
 // DEBUG settings
-results = sampleData;
-columnInfo = sampleColumnInfo;
-data = formatSASData(columnInfo, results);
-drawChart(columnInfo, data);
+// results = sampleData;
+// columnInfo = sampleColumnInfo;
+// data = formatSASData(columnInfo, results);
+// drawChart(columnInfo, data);
 
-var change_id = 0;
+// var change_id = 0;
 
-function changeData() {
+// function changeData() {
     
-    if (change_id == 0) {
-        sampleData = {data:[
-            ["2020-01-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-02-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-03-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-04-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-05-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-06-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-07-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-08-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-09-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-10-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-        ]};
-        change_id = 1;
-        results = sampleData;
-        columnInfo = sampleColumnInfo;
-        data = formatSASData(columnInfo, results);
-        drawChart(columnInfo, data);
-    } else {
-        sampleData = {data:[
-            ["2020-01-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-02-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-03-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-04-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-05-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-06-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-07-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-08-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-09-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-            ["2020-10-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-        ]};
-        change_id = 0;
-        results = sampleData;
-        columnInfo = sampleColumnInfo;
-        data = formatSASData(columnInfo, results);
-        drawChart(columnInfo, data);
-    }
-}
+//     if (change_id == 0) {
+//         sampleData = {data:[
+//             ["2020-01-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-02-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-03-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-04-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-05-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-06-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-07-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-08-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-09-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-10-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//         ]};
+//         change_id = 1;
+//         results = sampleData;
+//         columnInfo = sampleColumnInfo;
+//         data = formatSASData(columnInfo, results);
+//         drawChart(columnInfo, data);
+//     } else {
+//         sampleData = {data:[
+//             ["2020-01-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-02-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-03-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-04-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-05-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-06-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-07-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-08-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-09-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//             ["2020-10-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+//         ]};
+//         change_id = 0;
+//         results = sampleData;
+//         columnInfo = sampleColumnInfo;
+//         data = formatSASData(columnInfo, results);
+//         drawChart(columnInfo, data);
+//     }
+// }
