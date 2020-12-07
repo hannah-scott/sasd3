@@ -1,10 +1,10 @@
-.sales-line {
+.var1-line {
     fill: none;
     stroke-width: 3px;
     stroke: #020B12;
 }
 
-.supply-line {
+.var2-line {
     fill: none;
     stroke-width: 3px;
     stroke: #E7420B;

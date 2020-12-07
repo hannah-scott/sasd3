@@ -1,7 +1,8 @@
 /*
-    Simple D3 barchart for SAS Data-Driven Content objects
+    Dynamic D3 linechart for SAS Data-Driven Content objects
 
-    Both variables must be numeric
+    Designed to show two numerical variables, with upper and lower confidence
+    limits calculated for one of them
 */
 
 // Sample data
@@ -20,9 +21,9 @@ var sampleData = {data:[
 ]};
 var sampleColumnInfo = [
     {label: "date", type: "string"},
-    {label: "test_flag", type:"string"},
-    {label: "indexed_sales", type:"number"},
-    {label: "indexed_supply", type:"number"},
+    {label: "flag", type:"string"},
+    {label: "Variable 1", type:"number"},
+    {label: "Variable 2", type:"number"},
 ];
 
 // SVG settings
@@ -51,10 +52,10 @@ function drawChart(columnInfo, data) {
     // Calculate standard deviation
     var baseArray = data.filter((d) => d[testLabel] === 'B');
 
-    var baseSales = baseArray.map((d) => { return d[y1Label] });
+    var baseVal = baseArray.map((d) => { return d[y1Label] });
 
-    var lowerLimit = 100 - 1.96 * getStandardDeviation(baseSales),
-        upperLimit = 100 + 1.96 * getStandardDeviation(baseSales);
+    var lowerLimit = 100 - 1.96 * getStandardDeviation(baseVal),
+        upperLimit = 100 + 1.96 * getStandardDeviation(baseVal);
 
     var testStart = data.find((d) => d[testLabel] === 'T');
 
@@ -133,22 +134,22 @@ function drawChart(columnInfo, data) {
         .attr('height', yScale(lowerLimit) - yScale(upperLimit));
 
     
-    // Draw supply line
+    // Draw var2 line
     g.append("path")
         .datum(data)
         .attr('class', 'line')
-        .attr('class', 'supply-line')
+        .attr('class', 'var2-line')
         .attr('d', d3.line()
             .x(function(d) { return xScale(d[xLabel]); })
             .y(function(d) { return yScale(d[y2Label]); })
         )
         .attr('height', function(d) { return height - yScale(d[y2Label]); })
 
-    // Draw sales line
+    // Draw var1 line
     g.append("path")
         .datum(data)
         .attr('class', 'line')
-        .attr('class', 'sales-line')
+        .attr('class', 'var1-line')
         .attr('d', d3.line()
             .x(function(d) { return xScale(d[xLabel]); })
             .y(function(d) { return yScale(d[y1Label]); })
@@ -159,17 +160,17 @@ function drawChart(columnInfo, data) {
 
 
     g.append('path')
-        .datum([[width - 80,18],[width - 120,18]])
+        .datum([[width - 80,15],[width - 120,15]])
         .attr('class', 'line')
-        .attr('class', 'sales-line')
+        .attr('class', 'var1-line')
         .attr('d', d3.line()
             .x(d => d[0])
             .y(d => d[1])
         )
     g.append('path')
-        .datum([[width - 80,38],[width - 120,38]])
+        .datum([[width - 80,35],[width - 120,35]])
         .attr('class', 'line')
-        .attr('class', 'supply-line')
+        .attr('class', 'var2-line')
         .attr('d', d3.line()
             .x(d => d[0])
             .y(d => d[1])
@@ -177,17 +178,17 @@ function drawChart(columnInfo, data) {
 
     g.append('text')
         .attr('class', 'legend-text')
-        .attr('x', width - 180)
+        .attr('x', width - 70)
         .attr('y', 20)
         .attr('color', 'black')
-        .text('Sales');
+        .text(y1Label);
 
     g.append('text')
         .attr('class', 'legend-text')
-        .attr('x', width - 180)
+        .attr('x', width - 70)
         .attr('y', 40)
         .attr('color', 'black')
-        .text('Supply');
+        .text(y2Label);
 };
 
 // Retrieve data and begin processing
@@ -241,53 +242,53 @@ if (window.addEventListener) {
     window.attachEvent("onmessage", onMessage);
 }
 
-// // DEBUG settings
-// results = sampleData;
-// columnInfo = sampleColumnInfo;
-// data = formatSASData(columnInfo, results);
-// drawChart(columnInfo, data);
+// DEBUG settings
+results = sampleData;
+columnInfo = sampleColumnInfo;
+data = formatSASData(columnInfo, results);
+drawChart(columnInfo, data);
 
-// var change_id = 0;
+var change_id = 0;
 
-// function changeData() {
+function changeData() {
     
-//     if (change_id == 0) {
-//         sampleData = {data:[
-//             ["2020-01-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-02-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-03-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-04-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-05-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-06-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-07-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-08-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-09-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-10-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//         ]};
-//         change_id = 1;
-//         results = sampleData;
-//         columnInfo = sampleColumnInfo;
-//         data = formatSASData(columnInfo, results);
-//         drawChart(columnInfo, data);
-//     } else {
-//         sampleData = {data:[
-//             ["2020-01-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-02-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-03-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-04-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-05-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-06-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-07-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-08-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-09-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//             ["2020-10-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-//         ]};
-//         change_id = 0;
-//         results = sampleData;
-//         columnInfo = sampleColumnInfo;
-//         data = formatSASData(columnInfo, results);
-//         drawChart(columnInfo, data);
-//     }
+    if (change_id == 0) {
+        sampleData = {data:[
+            ["2020-01-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-02-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-03-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-04-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-05-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-06-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-07-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-08-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-09-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-10-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+        ]};
+        change_id = 1;
+        results = sampleData;
+        columnInfo = sampleColumnInfo;
+        data = formatSASData(columnInfo, results);
+        drawChart(columnInfo, data);
+    } else {
+        sampleData = {data:[
+            ["2020-01-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-02-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-03-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-04-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-05-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-06-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-07-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-08-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-09-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+            ["2020-10-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+        ]};
+        change_id = 0;
+        results = sampleData;
+        columnInfo = sampleColumnInfo;
+        data = formatSASData(columnInfo, results);
+        drawChart(columnInfo, data);
+    }
     
 
-// }
+}
