@@ -1,8 +1,13 @@
 /*
     Dynamic D3 linechart for SAS Data-Driven Content objects
 
-    Designed to show two numerical variables, with upper and lower confidence
-    limits calculated for one of them
+    Each row of input should be:
+        - a string, e.g. a date
+        - a binary category, {"B", "T"}
+        - two continuous variables
+
+    Plots two continuous variables and calculates a standard
+    deviation over "B".
 */
 
 // Sample data
@@ -27,19 +32,18 @@ var sampleColumnInfo = [
 ];
 
 // SVG settings
-
 var svg = d3.select("svg"),
     margin = 100,
     width = window.innerWidth - margin,
     height = window.innerHeight - margin;
 
-var xScale = d3.scalePoint().range ([0, width]).padding(0.4),
+var xScale = d3.scalePoint().range ([0, width]),
     yScale = d3.scaleLinear().range([height, 0]);
 
 function getStandardDeviation (array) {
-    const n = array.length
-    const mean = array.reduce((a, b) => a + b) / n
-    return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
+    const n = array.length;
+    const mean = array.reduce((a, b) => a + b) / n;
+    return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n);
 }
 
 // Draw simple bar chart
@@ -67,22 +71,37 @@ function drawChart(columnInfo, data) {
     var var1Vals = data.map(d => d[y1Label]),
         var2Vals = data.map(d => d[y2Label]),
         vals = var1Vals.concat(var2Vals).concat([lowerLimit, upperLimit]);
-    
-
-    var range = vals.reduce((a,b) => Math.max(a, b)) - vals.reduce((a,b) => Math.min(a, b));
+    var range = vals
+        .reduce((a,b) => Math.max(a, b)) - vals.reduce((a,b) => Math.min(a, b));
     var rangePadding = range * 0.15;
 
     var g = svg.append("g")
        .attr("transform", "translate(" + margin/2 + "," + margin/2 + ")");
+    
     // Scale X and Y
     xScale.domain(data.map(function(d) { return d[xLabel]; }));
-    yScale.domain([d3.min(data, function(d) { return Math.min(d[y1Label], d[y2Label], lowerLimit) - rangePadding}), d3.max(data, function(d) { return Math.max(d[y1Label], d[y2Label], upperLimit) + rangePadding})]);
+    yScale.domain([
+        d3.min(
+            data, function(d) { return Math.min(
+                d[y1Label], 
+                d[y2Label], 
+                lowerLimit) 
+            - rangePadding }
+        ), 
+        d3.max(
+            data, function(d) { return Math.max(
+                d[y1Label], 
+                d[y2Label], 
+                upperLimit
+            ) + rangePadding }
+        )
+    ]);
 
     // Draw axes
     g.append("g")
-    .attr("transform", "translate(" + 0 + "," + height + ")")
-    .call(d3.axisBottom(xScale).tickFormat(function(d){
-        return d;
+        .attr("transform", "translate(" + 0 + "," + height + ")")
+        .call(d3.axisBottom(xScale).tickFormat(function(d){
+            return d;
         }).ticks(10))
         .enter()
         .append("text")
@@ -92,8 +111,8 @@ function drawChart(columnInfo, data) {
         .text(xLabel);
 
     g.append("g")
-    .call(d3.axisLeft(yScale).tickFormat(function(d){
-        return d;
+        .call(d3.axisLeft(yScale).tickFormat(function(d){
+            return d;
         }).ticks(10))
         .enter()
         .append("text")
@@ -146,7 +165,7 @@ function drawChart(columnInfo, data) {
         )
         .attr('height', function(d) { return height - yScale(d[y2Label]); })
 
-    // Draw var1 line
+    // Draw var1 line (on top of var2 line, so after)
     g.append("path")
         .datum(data)
         .attr('class', 'line')
@@ -158,8 +177,6 @@ function drawChart(columnInfo, data) {
         .attr('height', function(d) { return height - yScale(d[y1Label]); })
 
     // Draw legend
-
-
     g.append('path')
         .datum([[width - 80,15],[width - 120,15]])
         .attr('class', 'line')
