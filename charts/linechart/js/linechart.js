@@ -44,30 +44,39 @@ function getStandardDeviation (array) {
 
 // Draw simple bar chart
 function drawChart(columnInfo, data) {
+    // Clear old chart down
+    svg.selectAll('*').remove();
+
+    // Get variable names
     var xLabel = columnInfo[0].label,
         testLabel = columnInfo[1].label,
         y1Label = columnInfo[2].label,
         y2Label = columnInfo[3].label;
 
-    // Calculate standard deviation
+    // Calculate confidence limits
     var baseArray = data.filter((d) => d[testLabel] === 'B');
-
     var baseVal = baseArray.map((d) => { return d[y1Label] });
-
     var baseMean = baseVal.reduce((a, b) => a + b) / baseVal.length;
-
     var lowerLimit = baseMean - 1.96 * getStandardDeviation(baseVal),
         upperLimit = baseMean + 1.96 * getStandardDeviation(baseVal);
 
+    // Get first test point for changing shading color
     var testStart = data.find((d) => d[testLabel] === 'T');
 
-    svg.selectAll('*').remove();
+    // Calculate percent of range for padding
+    var var1Vals = data.map(d => d[y1Label]),
+        var2Vals = data.map(d => d[y2Label]),
+        vals = var1Vals.concat(var2Vals);
+    
+
+    var range = vals.reduce((a,b) => Math.max(a, b)) - vals.reduce((a,b) => Math.min(a, b));
+    var rangePadding = Math.ceil(range * 0.15);
 
     var g = svg.append("g")
        .attr("transform", "translate(" + margin/2 + "," + margin/2 + ")");
     // Scale X and Y
     xScale.domain(data.map(function(d) { return d[xLabel]; }));
-    yScale.domain([d3.min(data, function(d) { return Math.min(d[y1Label], d[y2Label], lowerLimit) - 2}), d3.max(data, function(d) { return Math.max(d[y1Label], d[y2Label], upperLimit) + 2})]);
+    yScale.domain([d3.min(data, function(d) { return Math.min(d[y1Label], d[y2Label], lowerLimit) - rangePadding}), d3.max(data, function(d) { return Math.max(d[y1Label], d[y2Label], upperLimit) + rangePadding})]);
 
     // Draw axes
     g.append("g")
@@ -172,14 +181,12 @@ function drawChart(columnInfo, data) {
         .attr('class', 'legend-text')
         .attr('x', width - 70)
         .attr('y', 20)
-        .attr('color', 'black')
         .text(y1Label);
 
     g.append('text')
         .attr('class', 'legend-text')
         .attr('x', width - 70)
         .attr('y', 40)
-        .attr('color', 'black')
         .text(y2Label);
 };
 
@@ -226,7 +233,7 @@ function formatSASData(c, d) {
     return dict
 }
 
-// // Fetch data and run process
+// Fetch data and run process
 if (window.addEventListener) {
     // For standards-compliant web browsers
     window.addEventListener("message", onMessage, false);
