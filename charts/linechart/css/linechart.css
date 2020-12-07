@@ -1,24 +1,24 @@
 .var1-line {
     fill: none;
     stroke-width: 3px;
-    stroke: #020B12;
+    stroke: #E7420B;
 }
 
 .var2-line {
     fill: none;
     stroke-width: 3px;
-    stroke: #E7420B;
+    stroke: #0a3557;
 }
 
 .limit-line {
-    stroke: #020B12;
+    stroke: #0a3557;
     opacity: 30%;
     stroke-width: 1.5px;
     stroke-dasharray: 1%;
 }
 
 .base-shading {
-    fill: #020B12;
+    fill: #238ada;
     opacity: 15%;
 }
 

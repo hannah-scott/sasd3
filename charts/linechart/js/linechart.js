@@ -12,23 +12,25 @@
 
 // Sample data
 var self = this;
-var sampleData = {data:[
-    ["2020-01-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-    ["2020-02-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-    ["2020-03-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-    ["2020-04-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-    ["2020-05-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-    ["2020-06-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-    ["2020-07-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-    ["2020-08-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-    ["2020-09-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-    ["2020-10-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
-]};
+var sampleData = {
+    data: [
+        ["2020-01-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+        ["2020-02-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+        ["2020-03-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+        ["2020-04-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+        ["2020-05-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+        ["2020-06-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+        ["2020-07-01", "B", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+        ["2020-08-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+        ["2020-09-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+        ["2020-10-01", "T", Math.floor(Math.random() * 11) + 95, Math.floor(Math.random() * 11) + 95],
+    ]
+};
 var sampleColumnInfo = [
-    {label: "date", type: "string"},
-    {label: "flag", type:"string"},
-    {label: "Variable 1", type:"number"},
-    {label: "Variable 2", type:"number"},
+    { label: "date", type: "string" },
+    { label: "flag", type: "string" },
+    { label: "Variable 1", type: "number" },
+    { label: "Variable 2", type: "number" },
 ];
 
 // SVG settings
@@ -37,10 +39,10 @@ var svg = d3.select("svg"),
     width = window.innerWidth - margin,
     height = window.innerHeight - margin;
 
-var xScale = d3.scalePoint().range ([0, width]),
+var xScale = d3.scalePoint().range([0, width]).padding(0.4),
     yScale = d3.scaleLinear().range([height, 0]);
 
-function getStandardDeviation (array) {
+function getStandardDeviation(array) {
     const n = array.length;
     const mean = array.reduce((a, b) => a + b) / n;
     return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n);
@@ -72,35 +74,39 @@ function drawChart(columnInfo, data) {
         var2Vals = data.map(d => d[y2Label]),
         vals = var1Vals.concat(var2Vals).concat([lowerLimit, upperLimit]);
     var range = vals
-        .reduce((a,b) => Math.max(a, b)) - vals.reduce((a,b) => Math.min(a, b));
+        .reduce((a, b) => Math.max(a, b)) - vals.reduce((a, b) => Math.min(a, b));
     var rangePadding = range * 0.15;
 
     var g = svg.append("g")
-       .attr("transform", "translate(" + margin/2 + "," + margin/2 + ")");
-    
+        .attr("transform", "translate(" + margin / 2 + "," + margin / 2 + ")");
+
     // Scale X and Y
-    xScale.domain(data.map(function(d) { return d[xLabel]; }));
+    xScale.domain(data.map(function (d) { return d[xLabel]; }));
     yScale.domain([
         d3.min(
-            data, function(d) { return Math.min(
-                d[y1Label], 
-                d[y2Label], 
-                lowerLimit) 
-            - rangePadding }
-        ), 
+            data, function (d) {
+                return Math.min(
+                    d[y1Label],
+                    d[y2Label],
+                    lowerLimit)
+                    - rangePadding
+            }
+        ),
         d3.max(
-            data, function(d) { return Math.max(
-                d[y1Label], 
-                d[y2Label], 
-                upperLimit
-            ) + rangePadding }
+            data, function (d) {
+                return Math.max(
+                    d[y1Label],
+                    d[y2Label],
+                    upperLimit
+                ) + rangePadding
+            }
         )
     ]);
 
     // Draw axes
     g.append("g")
         .attr("transform", "translate(" + 0 + "," + height + ")")
-        .call(d3.axisBottom(xScale).tickFormat(function(d){
+        .call(d3.axisBottom(xScale).tickFormat(function (d) {
             return d;
         }).ticks(10))
         .enter()
@@ -111,7 +117,7 @@ function drawChart(columnInfo, data) {
         .text(xLabel);
 
     g.append("g")
-        .call(d3.axisLeft(yScale).tickFormat(function(d){
+        .call(d3.axisLeft(yScale).tickFormat(function (d) {
             return d;
         }).ticks(10))
         .enter()
@@ -127,7 +133,7 @@ function drawChart(columnInfo, data) {
         .attr('class', 'line')
         .attr('class', 'limit-line')
         .attr('d', d3.line()
-            .x(function(d) { return xScale(d[xLabel]); })
+            .x(function (d) { return xScale(d[xLabel]); })
             .y(yScale(lowerLimit))
         );
     g.append("path")
@@ -135,7 +141,7 @@ function drawChart(columnInfo, data) {
         .attr('class', 'line')
         .attr('class', 'limit-line')
         .attr('d', d3.line()
-            .x(function(d) { return xScale(d[xLabel]); })
+            .x(function (d) { return xScale(d[xLabel]); })
             .y(yScale(upperLimit))
         );
 
@@ -153,17 +159,17 @@ function drawChart(columnInfo, data) {
         .attr('width', xScale(data[data.length - 1][xLabel]) - xScale(testStart[xLabel]))
         .attr('height', yScale(lowerLimit) - yScale(upperLimit));
 
-    
+
     // Draw var2 line
     g.append("path")
         .datum(data)
         .attr('class', 'line')
         .attr('class', 'var2-line')
         .attr('d', d3.line()
-            .x(function(d) { return xScale(d[xLabel]); })
-            .y(function(d) { return yScale(d[y2Label]); })
+            .x(function (d) { return xScale(d[xLabel]); })
+            .y(function (d) { return yScale(d[y2Label]); })
         )
-        .attr('height', function(d) { return height - yScale(d[y2Label]); })
+        .attr('height', function (d) { return height - yScale(d[y2Label]); })
 
     // Draw var1 line (on top of var2 line, so after)
     g.append("path")
@@ -171,14 +177,14 @@ function drawChart(columnInfo, data) {
         .attr('class', 'line')
         .attr('class', 'var1-line')
         .attr('d', d3.line()
-            .x(function(d) { return xScale(d[xLabel]); })
-            .y(function(d) { return yScale(d[y1Label]); })
+            .x(function (d) { return xScale(d[xLabel]); })
+            .y(function (d) { return yScale(d[y1Label]); })
         )
-        .attr('height', function(d) { return height - yScale(d[y1Label]); })
+        .attr('height', function (d) { return height - yScale(d[y1Label]); })
 
     // Draw legend
     g.append('path')
-        .datum([[width - 80,15],[width - 120,15]])
+        .datum([[width - 80, 15], [width - 120, 15]])
         .attr('class', 'line')
         .attr('class', 'var1-line')
         .attr('d', d3.line()
@@ -186,7 +192,7 @@ function drawChart(columnInfo, data) {
             .y(d => d[1])
         )
     g.append('path')
-        .datum([[width - 80,35],[width - 120,35]])
+        .datum([[width - 80, 35], [width - 120, 35]])
         .attr('class', 'line')
         .attr('class', 'var2-line')
         .attr('d', d3.line()
@@ -235,12 +241,12 @@ function formatSASData(c, d) {
     dict = []
 
     // For each row of data
-    for(i=0; i < d.data.length; i++) {
+    for (i = 0; i < d.data.length; i++) {
         // Create dictionary of row mapped to column names
         row = d.data[i]
         row_dict = new Object;
 
-        for (j=0; j < row.length; j++) {
+        for (j = 0; j < row.length; j++) {
             row_dict[c[j].label] = row[j];
         }
 
