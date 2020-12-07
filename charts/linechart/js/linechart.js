@@ -70,7 +70,7 @@ function drawChart(columnInfo, data) {
     
 
     var range = vals.reduce((a,b) => Math.max(a, b)) - vals.reduce((a,b) => Math.min(a, b));
-    var rangePadding = Math.ceil(range * 0.15);
+    var rangePadding = range * 0.15;
 
     var g = svg.append("g")
        .attr("transform", "translate(" + margin/2 + "," + margin/2 + ")");
