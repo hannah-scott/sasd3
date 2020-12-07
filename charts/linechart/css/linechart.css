@@ -1,0 +1,38 @@
+.sales-line {
+    fill: none;
+    stroke-width: 3px;
+    stroke: #020B12;
+}
+
+.supply-line {
+    fill: none;
+    stroke-width: 3px;
+    stroke: #E7420B;
+}
+
+.limit-line {
+    stroke: #020B12;
+    opacity: 30%;
+    stroke-width: 1.5px;
+    stroke-dasharray: 1%;
+}
+
+.base-shading {
+    fill: #020B12;
+    opacity: 15%;
+}
+
+
+.test-shading {
+    fill: #E7420B;
+    opacity: 15%;
+}
+
+.legend-box {
+    fill: white;
+    opacity: 50%;
+}
+
+.legend-text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
